@@ -43,7 +43,45 @@ export default (editor, opts = {}) => {
     }
     </style>
     `;
+  const script = function () {
+    const dynamicProgress = "{[ dynamicProgress ]}";
+    const progressType = "{[ progressType ]}";
+    const stopAutoplay = "{[ stopAutoplay ]}";
 
+    const initLib = function () {
+      const swiper = new Swiper(".mySwiper", {
+        spaceBetween: 30,
+        centeredSlides: true,
+        autoplay: {
+          delay: 2500,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+          dynamicBullets: !!dynamicProgress,
+          type: progressType,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+      });
+
+      if (!!stopAutoplay) {
+        swiper.autoplay.stop();
+      }
+    };
+
+    if (typeof Swiper == "undefined") {
+      const script = document.createElement("script");
+      script.onload = initLib;
+      script.src = "https://unpkg.com/swiper@7/swiper-bundle.min.js";
+      document.body.appendChild(script);
+    } else {
+      initLib();
+    }
+  };
   bm.add(opts.name, {
     label: `
       <i class="fa fa-arrows-h"></i>
@@ -74,6 +112,7 @@ export default (editor, opts = {}) => {
             command: "add-slide",
             changeProp: 1,
           },
+
           {
             type: "checkbox",
             name: "dynamicProgress",
@@ -98,45 +137,7 @@ export default (editor, opts = {}) => {
             ],
           },
         ],
-        script: function () {
-          const dynamicProgress = "{[ dynamicProgress ]}";
-          const progressType = "{[ progressType ]}";
-          const stopAutoplay = "{[ stopAutoplay ]}";
-
-          const initLib = function () {
-            const swiper = new Swiper(".mySwiper", {
-              spaceBetween: 30,
-              centeredSlides: true,
-              autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-              },
-              pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-                dynamicBullets: !!dynamicProgress,
-                type: progressType,
-              },
-              navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-              },
-            });
-
-            if (!!stopAutoplay) {
-              swiper.autoplay.stop();
-            }
-          };
-
-          if (typeof Swiper == "undefined") {
-            const script = document.createElement("script");
-            script.onload = initLib;
-            script.src = "https://unpkg.com/swiper@7/swiper-bundle.min.js";
-            document.body.appendChild(script);
-          } else {
-            initLib();
-          }
-        },
+        script,
         components: [
           { type: "swiper-wrapper" },
           `<div class="swiper-button-next"></div>
@@ -160,9 +161,13 @@ export default (editor, opts = {}) => {
         this.listenTo(model, "change:dynamicProgress", this.updateScript);
         this.listenTo(model, "change:progressType", this.updateScript);
         this.listenTo(model, "change:stopAutoplay", this.updateScript);
-        this.listenTo(model, "Click:AddElement", this.updateScript);
       },
     }),
+    removed() {
+      console.log("ssssssssssssss");
+
+      document.removeEventListener("click", this.onDocClick);
+    },
   });
 
   dc.addType("swiper-wrapper", {
@@ -183,6 +188,17 @@ export default (editor, opts = {}) => {
       defaults: {
         tagName: "div",
         name: "swiperSlide",
+        traits: [
+          {
+            type: "button",
+            text: "remove Slide",
+            label: "remove ",
+            full: true,
+            name: "RemoveElement",
+            command: "remove-swiper-slide",
+            changeProp: 1,
+          },
+        ],
         classes: ["swiper-slide"],
         draggable: ".swiper-wrapper",
         droppable: true,
@@ -199,6 +215,94 @@ export default (editor, opts = {}) => {
       selected.find(".swiper-wrapper")[0].append({
         type: "swiper-slide",
         content: "<p>New Slide</p>",
+      });
+    }
+
+    selected.set("script", function () {
+      const dynamicProgress = "{[ dynamicProgress ]}";
+      const progressType = "{[ progressType ]}";
+      const stopAutoplay = "{[ stopAutoplay ]}";
+
+      const initLib = function () {
+        const swiper = new Swiper(".mySwiper", {
+          spaceBetween: 30,
+          centeredSlides: true,
+          autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+          },
+          pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+            dynamicBullets: !!dynamicProgress,
+            type: progressType,
+          },
+          navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+          },
+        });
+
+        if (!!stopAutoplay) {
+          swiper.autoplay.stop();
+        }
+      };
+
+      if (typeof Swiper == "undefined") {
+        const script = document.createElement("script");
+        script.onload = initLib;
+        script.src = "https://unpkg.com/swiper@7/swiper-bundle.min.js";
+        document.body.appendChild(script);
+      } else {
+        initLib();
+      }
+    });
+  });
+
+  //for delete slide
+  editor.Commands.add("remove-swiper-slide", (editor) => {
+    const selected = editor.getSelected();
+    if (selected && selected.is("swiper-slide")) {
+      selected.remove();
+
+      editor.getWrapper("swiper-container").set("script", function () {
+        const dynamicProgress = "{[ dynamicProgress ]}";
+        const progressType = "{[ progressType ]}";
+        const stopAutoplay = "{[ stopAutoplay ]}";
+
+        const initLib = function () {
+          const swiper = new Swiper(".mySwiper", {
+            spaceBetween: 30,
+            centeredSlides: true,
+            autoplay: {
+              delay: 2500,
+              disableOnInteraction: false,
+            },
+            pagination: {
+              el: ".swiper-pagination",
+              clickable: true,
+              dynamicBullets: !!dynamicProgress,
+              type: progressType,
+            },
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+          });
+
+          if (!!stopAutoplay) {
+            swiper.autoplay.stop();
+          }
+        };
+
+        if (typeof Swiper == "undefined") {
+          const script = document.createElement("script");
+          script.onload = initLib;
+          script.src = "https://unpkg.com/swiper@7/swiper-bundle.min.js";
+          document.body.appendChild(script);
+        } else {
+          initLib();
+        }
       });
     }
   });
