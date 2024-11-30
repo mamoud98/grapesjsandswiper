@@ -4,6 +4,7 @@ import "grapesjs/dist/css/grapes.min.css";
 import swiperComponent from "../pluguns2";
 import pluginBasic from "grapesjs-blocks-basic";
 import pluginForms from "grapesjs-plugin-forms";
+import style from "./style.css";
 
 const Editor = () => {
   const editorRef = useRef(null);
@@ -15,6 +16,7 @@ const Editor = () => {
         fromElement: true,
         height: "100vh",
         width: "auto",
+        styleManager: {},
         storageManager: false,
         plugins: [pluginBasic, pluginForms, swiperComponent],
         pluginsOpts: {
@@ -25,6 +27,7 @@ const Editor = () => {
         canvas: {
           styles: [
             "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css",
+            style,
           ],
           scripts: [
             "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js",
@@ -39,7 +42,15 @@ const Editor = () => {
 
   return (
     <div style={{ display: "flex" }}>
-      <div id="blocks" style={{ width: "300px", background: "#f5f5f5" }} />
+      <div
+        id="blocks"
+        style={{
+          width: "300px",
+          background: "#f5f5f5",
+          maxHeight: "100vh",
+          overflow: "auto",
+        }}
+      />
       <div id="editor" style={{ flex: 1 }} />
     </div>
   );

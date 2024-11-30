@@ -1,5 +1,6 @@
 import grapesjs from "grapesjs";
 import loadBlocks from "./blocks";
+import styleTypes from "./styleTypes";
 
 export default grapesjs.plugins.add("swiperComponent", (editor, opts = {}) => {
   let options = {
@@ -12,4 +13,5 @@ export default grapesjs.plugins.add("swiperComponent", (editor, opts = {}) => {
   }
 
   loadBlocks(editor, options);
+  styleTypes(editor, options);
 });

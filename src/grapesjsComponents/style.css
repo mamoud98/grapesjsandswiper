@@ -1,0 +1,74 @@
+.gjs-sm-custom-button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.gjs-sm-custom-button button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  width: 100px;
+  text-transform: capitalize;
+}
+.gjs-sm-custom-button button:hover {
+  opacity: 0.9;
+}
+.gjs-sm-custom-button button:active {
+  transform: scale(0.94);
+}
+
+div[class*="gjs-sm-swiper-slide"] {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+}
+
+div[class*="gjs-sm-swiper-slide"] .gjs-fields {
+  flex: 1;
+}
+div[class*="gjs-sm-swiper-slide"] .button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 5px;
+}
+
+div[class*="gjs-sm-swiper-slide"] button {
+  padding: 5px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  margin-top: 4px;
+  background: #545454;
+  color: #fff;
+}
+div[class*="gjs-sm-swiper-slide"] button:hover {
+  opacity: 0.9;
+}
+div[class*="gjs-sm-swiper-slide"] button.slect {
+  flex: 2;
+}
+div[class*="gjs-sm-swiper-slide"] button.delete {
+  flex: 1;
+  background-color: #dc3545;
+}
+div[class*="gjs-sm-swiper-slide"] button.delete:hover {
+  background-color: #bb2d3b;
+}
+div[class*="gjs-sm-swiper-slide"] button:active {
+  transform: scale(0.95);
+}
+.gjs-sm-SwiperSettings {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 15px;
+}
